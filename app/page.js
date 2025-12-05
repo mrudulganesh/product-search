@@ -27,7 +27,7 @@ export default  function Home() {
   if(loading) return <Loader/>;
   return (
     <>
-    <div className="w-full max-w-screen-2xl mx-auto px-2">
+    <div className="w-full max-w-screen-2xl mx-auto">
       <h2 className="text-2xl font-bold mb-6">All Products</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6 justify-items-center">
           {filteredProducts.length > 0 ? (
@@ -35,7 +35,12 @@ export default  function Home() {
               <Productcard key={p.id} product={p} />
             ))
           ) : (
-            <p className="text-gray-500 text-lg">No products found</p>
+            // <p className="text-gray-500 text-lg p-6 text-center">No products found</p>
+            <div className="flex w-full justify-center col-span-full">
+  <p className="text-gray-500 text-lg p-6 text-center">
+    No products found
+  </p>
+</div>
           )}
       </div>
     </div>
