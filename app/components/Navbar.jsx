@@ -53,15 +53,15 @@ const Navbar = () => {
 
   
   return (
-    <div>
-      <nav className='shadow bg-white px-6 py-4 flex items-center justify-between'>
-        <h1 className='text-xl font-bold text-gray-800'>Product Store</h1>
+    <div className="flex-1 justify-center relattive w-full fixed bg-white">
+      {/* <nav className='shadow bg-white px-6 py-4 flex items-center justify-between'> */}
+        <h1 className='text-xl font-bold text-gray-800 '>Product Store</h1>
          {/* Centered Search Bar */}
-        <div className="flex-1 flex justify-center relative">
+        <div className="w-full md:w-1/2  relative mx-auto">
           <input
             type="text"
             placeholder="Search products..."
-            className="w-1/2 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+            className="w-full border   border-gray-300 rounded-lg px-3 py-2  focus:outline-none focus:ring focus:ring-blue-300"
             value={input}
             onKeyDown={handleKeyDown}
           onChange={(e) => {
@@ -70,7 +70,7 @@ const Navbar = () => {
           }}
           />
          {suggestions.length > 0 && (
-          <ul className="absolute top-20 bg-white w-1/2 shadow-md  rounded-lg z-50">
+          <ul className="absolute left-0 mt-1 w-full bg-white  shadow-md  rounded-lg z-50">
             {suggestions.map((s, i) => (
               <li
                 key={i}
@@ -89,7 +89,7 @@ const Navbar = () => {
           </ul>
         )}
         </div>
-      </nav>
+      {/* </nav> */}
     </div>
   )
 }
