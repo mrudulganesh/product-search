@@ -1,0 +1,97 @@
+"use client";
+import React, { useState, useEffect, useContext } from "react";
+import { SearchContext } from "../context/Searchcontext";
+
+const Navbar = () => {
+  const { setSearchQuery } = useContext(SearchContext);
+  const [input, setInput] = useState("");
+   const [products, setProducts] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [activeIndex,setActiveIndex]=useState(0);
+
+  // Fetch products once
+  useEffect(() => {
+    async function loadProducts() {
+      const res = await fetch("https://fakestoreapi.com/products");
+      const data = await res.json();
+      setProducts(data);
+    }
+    loadProducts();
+  }, []);
+
+  // Suggestions
+  useEffect(() => {
+    if (!input.trim()) {
+      setSuggestions([]);
+      return;
+    }
+
+    const match = products
+      .map((p) => p.title)
+      .filter((title) =>
+        title.toLowerCase().includes(input.toLowerCase())
+      )
+      .slice(0, 6);
+
+    setSuggestions(match);
+  }, [input, products]);
+
+  //Handle Enter key
+  const handleKeyDown=(e)=>{
+    if(e.key === "Enter" && suggestions.length > 0){
+      const selectd = suggestions[activeIndex];
+      setInput(selectd);
+      setSearchQuery(selectd);
+      setSuggestions([]);
+    }
+
+    //Move up
+    if(e.key === "ArrowUp"){
+      setActiveIndex((prev)=>(prev > 0? prev-1 :prev));
+    };
+  };
+
+  
+  return (
+    <div>
+      <nav className='shadow bg-white px-6 py-4 flex items-center justify-between'>
+        <h1 className='text-xl font-bold text-gray-800'>Product Store</h1>
+         {/* Centered Search Bar */}
+        <div className="flex-1 flex justify-center relative">
+          <input
+            type="text"
+            placeholder="Search products..."
+            className="w-1/2 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
+            value={input}
+            onKeyDown={handleKeyDown}
+          onChange={(e) => {
+            setInput(e.target.value);
+            setSearchQuery(e.target.value);
+          }}
+          />
+         {suggestions.length > 0 && (
+          <ul className="absolute top-20 bg-white w-1/2 shadow-md  rounded-lg z-50">
+            {suggestions.map((s, i) => (
+              <li
+                key={i}
+                className={`px-3 py-2 cursor-pointer ${
+                  i === activeIndex? "bg-gray-100":"hover:bg-gray-50"
+                }`}
+                onClick={() => {
+                  setInput(s);
+                  setSearchQuery(s);
+                  setSuggestions([]);
+                }}
+              >
+                {s}
+              </li>
+            ))}
+          </ul>
+        )}
+        </div>
+      </nav>
+    </div>
+  )
+}
+
+export default Navbar
